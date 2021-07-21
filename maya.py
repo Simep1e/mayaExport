@@ -1,0 +1,58 @@
+import maya.cmds as cmd
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+def utf_8String(StringT):
+  utf_8String = StringT
+  utf_8String.encode('utf-8')
+  utf_8String = unicode(utf_8String, "utf-8")
+  return utf_8String
+def checkSelect():
+  list_select = []
+  if cmd.ls(sl = True) != []:
+    list_select = cmd.ls(sl=True)
+    return list_select
+  else:
+    return []
+
+def centerPivot():
+  for i in checkSelect():
+    cmd.xform(i, centerPivots=True)
+
+def pivotMoveToWorldPositon000():
+  for i in checkSelect():
+    Name = i
+    cmd.move(0, 0, 0, Name+'.rotatePivot', Name+'.scalePivot', rpr=True)
+    cmd.makeIdentity(Name, a=True)
+
+
+
+def meshMoveToWorldPosition000AndClean():
+  centerPivot()
+  for i in checkSelect():
+    cmd.move(0, 0, 0, i,rpr=True)
+    cmd.makeIdentity(i, a=True)
+
+def mainGui():
+  windowName = 'CC_Tool'
+  windowTitle = 'CC_Tool1.0'
+
+  try:
+    cmd.deleteUI(windowName)
+  except:
+    pass
+  cmd.window(windowName,title = windowTitle)
+  cmd.columnLayout(adj = True)
+
+  explain_ZeroPivot = utf_8String('')
+  explain_Clean = utf_8String('')
+
+  cmd.button(l='ZeroPivot',ann = explain_ZeroPivot, h=60, w=20, c='pivotMoveToWorldPositon000()')
+  cmd.button(l='ZeroMeshClean', ann=explain_Clean, h=60, w=20, c='meshMoveToWorldPosition000AndClean()')
+
+  cmd.showWindow(windowName)
+
+
+mainGui()
