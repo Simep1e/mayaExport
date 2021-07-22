@@ -35,9 +35,18 @@ def meshMoveToWorldPosition000AndClean():
     cmd.move(0, 0, 0, i,rpr=True)
     cmd.makeIdentity(i, a=True)
 
+def exportMesh():
+  #selObj = cmds.ls(sl = 1)
+  path = 'D:/Unreal_Project/P1-塔防资源/塔防资源 4.26/Content/1game'
+  #FileName = selObj
+  for i in checkSelect():
+    mainPath = path +'/' +i
+    cmds.file(mainPath, pr=1, es=1, force=1, options="groups=1;ptgroups=1;materials=1;smoothing=1;normals=1",type="FBX export")
+
+
 def mainGui():
-  windowName = 'CC_Tool'
-  windowTitle = 'CC_Tool1.0'
+  windowName = 'Export_Tool'
+  windowTitle = 'Export_Tool1.0'
 
   try:
     cmd.deleteUI(windowName)
@@ -51,6 +60,7 @@ def mainGui():
 
   cmd.button(l='ZeroPivot',ann = explain_ZeroPivot, h=60, w=20, c='pivotMoveToWorldPositon000()')
   cmd.button(l='ZeroMeshClean', ann=explain_Clean, h=60, w=20, c='meshMoveToWorldPosition000AndClean()')
+  cmd.button(l='Export', ann=explain_Clean, h=60, w=20, c='exportMesh()')
 
   cmd.showWindow(windowName)
 
